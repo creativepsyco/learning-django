@@ -154,3 +154,6 @@ LOGGING = {
         },
     }
 }
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'chend@garena.com'
+EMAIL_HOST_PASSWORD = 'maxwellroad'

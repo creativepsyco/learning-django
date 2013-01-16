@@ -9,7 +9,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from polls.models import Poll, Choice
 from django.template import Context, loader, RequestContext
-
+from django.core.mail import send_mail
 
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
@@ -56,5 +56,11 @@ def vote(request, poll_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
 
-        return HttpResponseRedirect(reverse('polls.views.results',
-                                    args=(p.id, )))
+        # email
+
+        send_mail('Subject here', 'Here is the message.',
+                  'from@example.com', ['mohit.kanwal@gmail.com'],
+                  fail_silently=False)
+
+        return HttpResponseRedirect(reverse('poll_results', args=(p.id,
+                                    )))
