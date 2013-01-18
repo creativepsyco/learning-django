@@ -11,6 +11,7 @@ from polls.models import Poll, Choice
 from django.template import Context, loader, RequestContext
 from django.core.mail import send_mail
 
+
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
 
@@ -46,7 +47,7 @@ def vote(request, poll_id):
 
         return render_to_response('detail.html', {'poll': p,
                                   'error_message': "You didn't select a choice."
-                                  },
+                                                  },
                                   context_instance=RequestContext(request))
     else:
         selected_choice.votes += 1
@@ -58,9 +59,30 @@ def vote(request, poll_id):
 
         # email
 
-        send_mail('Subject here', 'Here is the message.',
-                  'from@example.com', ['mohit.kanwal@gmail.com'],
-                  fail_silently=False)
+        # send_mail('Subject here', 'Here is the message.',
+        #           'from@example.com', ['mohit.kanwal@gmail.com'],
+        #           fail_silently=False)
 
+        
         return HttpResponseRedirect(reverse('poll_results', args=(p.id,
-                                    )))
+                                                                  )))
+
+
+def mail(sender, receiver, Message):
+    import smtplib
+    print "Sending email"
+    try:
+        s = smtplib.SMTP("smtp.nus.edu.sg")
+        s.ehlo()
+        s.set_debuglevel(1)
+        s.starttls()
+        s.ehlo()
+        # s.connect()
+        msg = ("From: %s\r\nTo: %s\r\n\r\n"
+               % (sender, receiver))
+        Message = msg + "\n" + Message
+        #s.login("<>", "<>")
+        s.sendmail(sender, receiver, Message)
+    except Exception, R:
+            print R
+            return R
