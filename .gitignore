@@ -4,3 +4,6 @@
 local_settings.py
 settings.py
 build/
+
+# Ignore sqlite3 DBs
+*.sqlite
